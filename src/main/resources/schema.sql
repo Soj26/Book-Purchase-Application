@@ -36,7 +36,7 @@ CREATE TABLE users (
                        encryptedPassword VARCHAR(255) NOT NULL,
                        enabled BOOLEAN NOT NULL
 );
-ALTER TABLE users ADD COLUMN balance DECIMAL(10, 2) DEFAULT 100.00; // Default balance
+ALTER TABLE sec_user ADD COLUMN balance DECIMAL(10, 2) DEFAULT 0.00;
 
 CREATE TABLE books (
                        bookID BIGINT AUTO_INCREMENT PRIMARY KEY,

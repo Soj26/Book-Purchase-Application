@@ -1,6 +1,7 @@
 package ca.sheridancollege.alagao.controllers;
 
 import ca.sheridancollege.alagao.beans.Book;
+import ca.sheridancollege.alagao.beans.User;
 import ca.sheridancollege.alagao.database.BookAccess;
 import ca.sheridancollege.alagao.database.DatabaseAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,20 @@ public class HomeController {
     public String userIndex(Model model, Principal principal) {
         List<Book> books = bookAccess.getBookList();
         model.addAttribute("books", books);
-        model.addAttribute("userName", principal.getName()); // Get logged-in user's name
+
+        // Fetch the user details using their email (obtained from the Principal)
+        String email = principal.getName(); // Assuming the principal name is the email
+        ca.sheridancollege.alagao.beans.User user = da.findUserAccount(email);
+
+        if (user != null) {
+            // Add user details to the model
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userBalance", user.getBalance());
+        } else {
+            // Handle the case where the user is not found
+            model.addAttribute("error", "User not found");
+        }
+
         return "/secured/user/index";
     }
 
@@ -77,6 +91,35 @@ public class HomeController {
             model.addAttribute("error", "Registration failed: " + e.getMessage());
             return "register"; // Send back to the registration form with error
         }
+    } @PostMapping("/buy/{bookId}")
+    public String buyBook(@PathVariable Long bookId, @RequestParam int quantity, Principal principal, Model model) {
+        Book book = bookAccess.findBookById(bookId);
+        if (book == null) {
+            model.addAttribute("error", "Book not found");
+            return "/secured/user/index";
+        }
+
+        if (quantity > book.getQuantity()) {
+            model.addAttribute("error", "Not enough stock available");
+            return "/secured/user/index";
+        }
+
+        User user = da.findUserAccount(principal.getName());
+        double totalCost = book.getPrice() * quantity;
+
+        if (user.getBalance() >= totalCost) {
+            user.setBalance(user.getBalance() - totalCost);
+            da.updateUserBalance(user.getEmail(), user.getBalance());
+
+            book.setQuantity(book.getQuantity() - quantity);
+            bookAccess.updateBookById(bookId, book);
+
+            model.addAttribute("success", "Purchase successful. New balance: " + user.getBalance());
+        } else {
+            model.addAttribute("error", "Insufficient balance");
+        }
+
+        return "/secured/user/index";
     }
 
 }

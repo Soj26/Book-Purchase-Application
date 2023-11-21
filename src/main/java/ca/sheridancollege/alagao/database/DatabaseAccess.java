@@ -21,12 +21,10 @@ public class DatabaseAccess {
     private BCryptPasswordEncoder passenc;
 
     public User findUserAccount(String email) {
-        MapSqlParameterSource mapsqlp = new MapSqlParameterSource();
-
+        MapSqlParameterSource params = new MapSqlParameterSource();
         String query = "SELECT * FROM sec_user WHERE email = :email";
-        mapsqlp.addValue("email", email);
-
-        return jdbc.queryForObject(query, mapsqlp, new BeanPropertyRowMapper<User>(User.class));
+        params.addValue("email", email);
+        return jdbc.queryForObject(query, params, new BeanPropertyRowMapper<>(User.class));
     }
 
     public List<String> getRolesById(Long userID) {
@@ -63,5 +61,12 @@ public class DatabaseAccess {
         mapsql.addValue("roleId", roleId);
 
         jdbc.update(query, mapsql);
+    }
+    public void updateUserBalance(String email, double newBalance) {
+        String query = "UPDATE sec_user SET balance = :balance WHERE email = :email";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("balance", newBalance);
+        params.addValue("email", email);
+        jdbc.update(query, params);
     }
 }

@@ -1,7 +1,5 @@
-INSERT INTO sec_user(email, encryptedPassword, enabled)
-VALUES('alagao@sheridancollege.ca','$2a$10$Nf3Iz5TbbGubtuvVOZCC.OI4yRNqil3yFhN10m6EJY0s4E2qMrEqy', 1);
-
-
+INSERT INTO sec_user(email, encryptedPassword, enabled, balance)
+VALUES('alagao@sheridancollege.ca', '$2a$10$Nf3Iz5TbbGubtuvVOZCC.OI4yRNqil3yFhN10m6EJY0s4E2qMrEqy', 1, 1000.00);
 
 INSERT INTO sec_role(roleName) VALUES ('ROLE_USER');
 

@@ -8,8 +8,10 @@
 <body>
 <h1>Welcome to the User Dashboard</h1>
 <div>
-    <p>Logged in as: <span th:text="${userName}"></span></p>
+    <p>Logged in as: <span th:text="${userName}">User</span></p>
+    <p>Your Balance: $<span th:text="${userBalance}">0.00</span></p>
 </div>
+
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Logout" />
 </form>
