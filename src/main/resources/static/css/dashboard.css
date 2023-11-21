@@ -1,0 +1,92 @@
+/* Apply a general reset to margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif; /* Replace with the font used in the image if known */
+    background-color: #f4f4f4; /* Use the background color similar to the image */
+    padding: 20px;
+}
+
+h1 {
+    color: #333; /* Use the color similar to the image */
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd; /* Use the border color similar to the image */
+}
+
+th {
+    background-color: #eee; /* Use the header background color similar to the image */
+    color: #333; /* Use the text color similar to the image */
+    padding: 10px;
+}
+
+td {
+    text-align: left;
+    padding: 10px;
+    color: #333; /* Use the text color similar to the image */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+input[type="submit"], button {
+    background-color: #5cb85c; /* Use the button color similar to the image */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: #4cae4c; /* Use a slightly darker green for hover state */
+}
+
+input[type="number"] {
+    padding: 5px;
+    margin-right: 5px;
+}
+
+form {
+    text-align: right;
+}
+
+/* Additional styles for logout button, messages, and cart */
+input[type="submit"][value="Logout"] {
+    background-color: #d9534f; /* Typically a logout button would be red */
+}
+
+input[type="submit"][value="Logout"]:hover {
+    background-color: #c9302c; /* Darker red for hover state */
+}
+
+p {
+    margin: 20px 0;
+}
+
+/* Use this if you have specific IDs or classes for success/error messages */
+.success {
+    color: #3c763d; /* Green for success messages */
+}
+
+.error {
+    color: #a94442; /* Red for error messages */
+}
+
+/* Additional layout styles for your forms and user info */
+div {
+    margin-bottom: 20px;
+}

@@ -57,7 +57,7 @@ public class BookAccess {
     }
 
     public void updateBookById(Long bookId, Book updatedBook) {
-        // Assuming bookId is part of the updatedBook object
+
         String query = "UPDATE books SET title = :title, author = :author, isbn = :isbn, quantity = :quantity, price = :price WHERE bookID = :bookID";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -72,7 +72,7 @@ public class BookAccess {
         if (rowsAffected > 0) {
             System.out.println("Updated book with ID " + bookId);
         } else {
-            // Handle the case where no rows were affected (e.g., book not found)
+
             System.out.println("No book found with ID " + bookId);
         }
     }

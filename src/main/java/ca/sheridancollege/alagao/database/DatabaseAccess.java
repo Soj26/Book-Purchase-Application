@@ -39,16 +39,16 @@ public class DatabaseAccess {
         return jdbc.queryForList(query, mapsqlp, String.class);
     }
 
-    public void addUser(String email, String passsword) {
-        MapSqlParameterSource mapsql = new MapSqlParameterSource();
+    public void addUser(String email, String password, String name) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        String query = "INSERT INTO sec_user (email, encryptedPassword, enabled, balance, name, purchaseCount) "
+                + "VALUES (:email, :encryptedPassword, 1, 0.00, :name, 0)";
 
-        String query = "INSERT INTO sec_user (email, encryptedPassword,enabled) "
-                + "VALUES (:email, :encryptedPassword, 1)";
+        parameters.addValue("email", email);
+        parameters.addValue("encryptedPassword", passenc.encode(password));
+        parameters.addValue("name", name); // Adding the name parameter
 
-        mapsql.addValue("email", email);
-        mapsql.addValue("encryptedPassword", passenc.encode(passsword));
-
-        jdbc.update(query, mapsql);
+        jdbc.update(query, parameters);
     }
 
     public void addRole(Long userId, Long roleId) {

@@ -26,22 +26,19 @@ public class HomeController {
 
     @GetMapping("/secured/user")
     public String userIndex(Model model, Principal principal) {
-        List<Book> books = bookAccess.getBookList();
-        model.addAttribute("books", books);
-
-
-        String email = principal.getName(); // Assuming the principal name is the email
-        ca.sheridancollege.alagao.beans.User user = da.findUserAccount(email);
+        String email = principal.getName();
+        User user = da.findUserAccount(email);
 
         if (user != null) {
-            // Add user details to the model
             model.addAttribute("userName", user.getName());
             model.addAttribute("userBalance", user.getBalance());
+            // Other user details...
         } else {
-            // Handle the case where the user is not found
             model.addAttribute("error", "User not found");
         }
 
+        List<Book> books = bookAccess.getBookList();
+        model.addAttribute("books", books);
         return "/secured/user/index";
     }
 
@@ -71,6 +68,7 @@ public class HomeController {
     public String processRegister(@RequestParam String email,
                                   @RequestParam String password,
                                   @RequestParam String confirmPassword,
+                                  @RequestParam String name,
                                   Model model) {
         // Check if passwords match
         if (!password.equals(confirmPassword)) {
@@ -80,7 +78,7 @@ public class HomeController {
 
         // Add user to the database
         try {
-            da.addUser(email, password);
+            da.addUser(email, password, name );
             Long userId = da.findUserAccount(email).getUserID();
             da.addRole(userId, 1L); // Consider using a constant or enum for role IDs
 

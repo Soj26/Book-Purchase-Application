@@ -3,7 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
+  <style>
+      /* Apply a general reset to margins and paddings */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Arial', sans-serif; /* This stays the same */
+          background-color: #1e1e1e; /* Dark background for the body */
+          padding: 20px;
+          color: #ccc; /* Light text color for contrast */
+      }
+
+      h1 {
+          color: #fff; /* White color for headings */
+          margin-bottom: 20px;
+      }
+
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 20px;
+      }
+
+      table, th, td {
+          border: 1px solid #555; /* Darker border color for elements */
+      }
+
+      th {
+          background-color: #333; /* Dark background for table headers */
+          color: #fff; /* White text color for contrast */
+          padding: 10px;
+      }
+
+      td {
+          text-align: left;
+          padding: 10px;
+          color: #ccc; /* Light text color for contrast */
+      }
+
+      tr:nth-child(even) {
+          background-color: #2a2a2a; /* Slightly lighter background for alternate rows */
+      }
+
+      input[type="submit"], button {
+          background-color: #5cb85c; /* The button color can stay for visibility, or you can choose a darker shade */
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          cursor: pointer;
+          margin-top: 10px;
+      }
+
+      input[type="submit"]:hover, button:hover {
+          background-color: #4cae4c; /* Use a slightly darker green for hover state */
+      }
+
+      input[type="number"] {
+          padding: 5px;
+          margin-right: 5px;
+          background-color: #333; /* Dark background for input */
+          color: #ccc; /* Light text color for contrast */
+          border: 1px solid #555; /* Dark border for input */
+      }
+
+      form {
+          text-align: right;
+      }
+
+      /* Additional styles for logout button, messages, and cart */
+      input[type="submit"][value="Logout"] {
+          background-color: #d9534f; /* Red color can stay for semantic reasons */
+      }
+
+      input[type="submit"][value="Logout"]:hover {
+          background-color: #c9302c; /* Darker red for hover state */
+      }
+
+      p {
+          margin: 20px 0;
+      }
+
+      /* Use this if you have specific IDs or classes for success/error messages */
+      .success {
+          color: #38a169; /* Adjusted for better visibility on dark background */
+      }
+
+      .error {
+          color: #e53e3e; /* Adjusted for better visibility on dark background */
+      }
+
+      /* Additional layout styles for your forms and user info */
+      div {
+          margin-bottom: 20px;
+      }
+
+      /* Optional: you may want to add a style for links or other elements */
+      a {
+          color: #559fff; /* Example link color */
+      }
+
+      a:hover {
+          color: #1c7ed6; /* Darker shade for hover state */
+      }
+
+  </style>
 </head>
 <body>
 <h1>Welcome to the User Dashboard</h1>
