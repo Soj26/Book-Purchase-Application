@@ -21,5 +21,6 @@ public class User {
     private double balance;
     @NonNull
     private Boolean enabled; //properly activater?
+    private int purchaseCount;
 
 }

@@ -1,0 +1,33 @@
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; /* Adds space between fields */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Form Block Style */
+.form-block {
+    background-color: #fff; /* White background for the block */
+    padding: 20px;
+    border: 2px solid #ddd; /* Border around the block */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds subtle shadow */
+    max-width: 400px;
+    margin: 20px auto; /* Centers the block and adds space around it */
+}
+
+/* Style for the Submit Button */
+input[type="submit"] {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* Removes default border */
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049; /* Darker green on hover */
+}

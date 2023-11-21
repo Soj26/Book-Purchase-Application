@@ -108,26 +108,28 @@ public class HomeController {
         double totalCost = book.getPrice() * quantity;
 
         if (user.getBalance() >= totalCost) {
-            // Update user balance in the database
             user.setBalance(user.getBalance() - totalCost);
             da.updateUserBalance(user.getEmail(), user.getBalance());
 
-            // Update book quantity in the database
             book.setQuantity(book.getQuantity() - quantity);
             bookAccess.updateBookById(bookId, book);
 
-            // Add success message and updated user balance to the model
+            model.addAttribute("receipt", true);
+            model.addAttribute("bookTitle", book.getTitle());
+            model.addAttribute("quantityPurchased", quantity);
+            model.addAttribute("totalCost", totalCost);
+            model.addAttribute("remainingBalance", user.getBalance());
+
             model.addAttribute("success", "Purchase successful. New balance: " + user.getBalance());
-            model.addAttribute("userBalance", user.getBalance());
         } else {
             model.addAttribute("error", "Insufficient balance");
         }
 
-        // Refresh the list of books and add to the model
         List<Book> books = bookAccess.getBookList();
         model.addAttribute("books", books);
-        model.addAttribute("userName", principal.getName()); // Add this to display the username
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("userBalance", user.getBalance());
 
-        return "secured/user/index"; // Ensure this template has the necessary fields to display the balance and success/error messages.
+        return "/secured/user/index";
     }
 }

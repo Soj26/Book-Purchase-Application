@@ -3,13 +3,17 @@
 <head>us
     <meta charset="UTF-8">
     <title>Unsecured Page</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<h1>Log in Security</h1>
-<h2>This is an unsecured page, and anyone can access it.</h2>
-<h2>You can access the secured page after authenticating yourself properly.</h2>
+<div class="center-block">
+    <h1>Log in Security</h1>
+    <h2>This is an unsecured page, and anyone can access it.</h2>
+    <h2>You can access the secured page after authenticating yourself properly.</h2>
 
-<h3><a th:href="@{/secured/user}">Authenticate User</a></h3>
-<h3><a th:href="@{/register}">Register</a></h3>
+    <h3><a th:href="@{/secured/user}">Authenticate User</a></h3>
+    <h3><a th:href="@{/register}">Register</a></h3>
+</div>
+
 </body>
 </html>
