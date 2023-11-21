@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1>Welcome to the User Dashboard</h1>
+<div>
+    <p>Logged in as: <span th:text="${userName}"></span></p>
+</div>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout" />
+</form>
+<div th:if="${not #lists.isEmpty(books)}">
+    <h2>Available Books</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.price}"></td>
+            <td th:text="${book.quantity}"></td>
+            <td>
+                <form th:action="@{/buy/{bookId}(bookId=${book.bookID})}" method="post">
+                    <input type="number" name="quantity" min="1" max="${book.quantity}" value="1"/>
+                    <button type="submit">Buy</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${#lists.isEmpty(books)}">
+    <p>No books available at the moment.</p>
+</div>
+<div th:if="${success}">
+    <p th:text="${success}"></p>
+</div>
+<div th:if="${error}">
+    <p th:text="${error}"></p>
+</div>
+</body>
+</html>
