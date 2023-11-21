@@ -29,7 +29,7 @@ public class HomeController {
         List<Book> books = bookAccess.getBookList();
         model.addAttribute("books", books);
 
-        // Fetch the user details using their email (obtained from the Principal)
+
         String email = principal.getName(); // Assuming the principal name is the email
         ca.sheridancollege.alagao.beans.User user = da.findUserAccount(email);
 
@@ -96,30 +96,38 @@ public class HomeController {
         Book book = bookAccess.findBookById(bookId);
         if (book == null) {
             model.addAttribute("error", "Book not found");
-            return "/secured/user/index";
+            return "redirect:/secured/user";
         }
 
         if (quantity > book.getQuantity()) {
             model.addAttribute("error", "Not enough stock available");
-            return "/secured/user/index";
+            return "redirect:/secured/user";
         }
 
         User user = da.findUserAccount(principal.getName());
         double totalCost = book.getPrice() * quantity;
 
         if (user.getBalance() >= totalCost) {
+            // Update user balance in the database
             user.setBalance(user.getBalance() - totalCost);
             da.updateUserBalance(user.getEmail(), user.getBalance());
 
+            // Update book quantity in the database
             book.setQuantity(book.getQuantity() - quantity);
             bookAccess.updateBookById(bookId, book);
 
+            // Add success message and updated user balance to the model
             model.addAttribute("success", "Purchase successful. New balance: " + user.getBalance());
+            model.addAttribute("userBalance", user.getBalance());
         } else {
             model.addAttribute("error", "Insufficient balance");
         }
 
-        return "/secured/user/index";
-    }
+        // Refresh the list of books and add to the model
+        List<Book> books = bookAccess.getBookList();
+        model.addAttribute("books", books);
+        model.addAttribute("userName", principal.getName()); // Add this to display the username
 
+        return "secured/user/index"; // Ensure this template has the necessary fields to display the balance and success/error messages.
+    }
 }

@@ -37,6 +37,8 @@ CREATE TABLE users (
                        enabled BOOLEAN NOT NULL
 );
 ALTER TABLE sec_user ADD COLUMN balance DECIMAL(10, 2) DEFAULT 0.00;
+ALTER TABLE sec_user
+    ADD COLUMN name VARCHAR(255) NOT NULL AFTER userID;
 
 CREATE TABLE books (
                        bookID BIGINT AUTO_INCREMENT PRIMARY KEY,
