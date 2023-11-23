@@ -3,79 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>User Dashboard</title>
-    <style>
-        body {
-            font-family: "Agency FB";
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            border: 1px solid #555;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #555;
-        }
-
-        tr:nth-child(even) {
-            background-color: #444;
-        }
-
-        input[type="submit"], button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover, button:hover {
-            background-color: white;
-        }
-
-        input[type="number"], input[type="text"] {
-            padding: 5px;
-            margin-right: 5px;
-            margin-bottom: 10px;
-        }
-
-        form {
-            margin-bottom: 20px;
-        }
-
-        .success, .error {
-            color: #38a169; /* For success messages */
-            margin-bottom: 20px;
-        }
-
-        .error {
-            color: red; /* For error messages */
-        }
-
-        a {
-            color: blue;
-        }
-
-        a:hover {
-            color: #007bff;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
 <h1>Welcome to the User Dashboard</h1>
@@ -107,10 +35,12 @@
             <td th:text="${book.price}"></td>
             <td th:text="${book.quantity}"></td>
             <td>
-                <form th:action="@{/buy/{bookId}(bookId=${book.bookID})}" method="post">
+                <form th:action="@{/buy/{bookId}(bookId=${book.bookID})}" method="post" style="display: inline;">
                     <input type="number" name="quantity" min="1" max="${book.quantity}" value="1"/>
                     <button type="submit">Buy</button>
                 </form>
+                |
+                <a th:href="@{/editBook/{bookId}(bookId=${book.bookID})}">Edit</a>
             </td>
         </tr>
         </tbody>
@@ -130,7 +60,7 @@
     <button type="submit">Add Book</button>
 </form>
 
-<!-- Book List -->
+
 <div th:if="${not #lists.isEmpty(books)}">
     <h2>Available Books</h2>
     <table border="1">
@@ -161,10 +91,6 @@
 </div>
 <div th:if="${#lists.isEmpty(books)}">
     <p>No books available at the moment.</p>
-</div>
-
-<div th:if="${successMessage2}">
-    <p th:text="${successMessage2}"></p>
 </div>
 <div th:if="${error}">
     <p th:text="${error}"></p>

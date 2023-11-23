@@ -143,10 +143,16 @@ public class HomeController {
     }
 
 
-    @PostMapping("/editBook")
-    public String editBook(@RequestParam Long bookId, @ModelAttribute Book updatedBook, Model model) {
-        bookAccess.updateBookById(bookId, updatedBook);
-        model.addAttribute("successMessage2", "Book updated successfully!");
-        return "redirect:/secured/user";
+    @GetMapping("/editBook/{bookId}")
+    public String showEditForm(@PathVariable Long bookId, Model model) {
+        Book book = bookAccess.findBookById(bookId);
+        if (book != null) {
+            model.addAttribute("book", book);
+            return "/secured/user/editBook";
+        } else {
+            model.addAttribute("errorMessage", "Book not found.");
+            return "redirect:/secured/user/index";
+        }
+
     }
 }
