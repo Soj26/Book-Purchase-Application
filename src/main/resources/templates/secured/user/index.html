@@ -3,114 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>User Dashboard</title>
-  <style>
-      /* Apply a general reset to margins and paddings */
-      * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-      }
+    <style>
+        body {
+            font-family: "Agency FB";
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+        }
 
-      body {
-          font-family: 'Arial', sans-serif; /* This stays the same */
-          background-color: #1e1e1e; /* Dark background for the body */
-          padding: 20px;
-          color: #ccc; /* Light text color for contrast */
-      }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-      h1 {
-          color: #fff; /* White color for headings */
-          margin-bottom: 20px;
-      }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-      table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 20px;
-      }
+        th, td {
+            border: 1px solid #555;
+            padding: 10px;
+            text-align: left;
+        }
 
-      table, th, td {
-          border: 1px solid #555; /* Darker border color for elements */
-      }
+        th {
+            background-color: #555;
+        }
 
-      th {
-          background-color: #333; /* Dark background for table headers */
-          color: #fff; /* White text color for contrast */
-          padding: 10px;
-      }
+        tr:nth-child(even) {
+            background-color: #444;
+        }
 
-      td {
-          text-align: left;
-          padding: 10px;
-          color: #ccc; /* Light text color for contrast */
-      }
+        input[type="submit"], button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
 
-      tr:nth-child(even) {
-          background-color: #2a2a2a; /* Slightly lighter background for alternate rows */
-      }
+        input[type="submit"]:hover, button:hover {
+            background-color: white;
+        }
 
-      input[type="submit"], button {
-          background-color: #5cb85c; /* The button color can stay for visibility, or you can choose a darker shade */
-          color: white;
-          border: none;
-          padding: 10px 20px;
-          cursor: pointer;
-          margin-top: 10px;
-      }
+        input[type="number"], input[type="text"] {
+            padding: 5px;
+            margin-right: 5px;
+            margin-bottom: 10px;
+        }
 
-      input[type="submit"]:hover, button:hover {
-          background-color: #4cae4c; /* Use a slightly darker green for hover state */
-      }
+        form {
+            margin-bottom: 20px;
+        }
 
-      input[type="number"] {
-          padding: 5px;
-          margin-right: 5px;
-          background-color: #333; /* Dark background for input */
-          color: #ccc; /* Light text color for contrast */
-          border: 1px solid #555; /* Dark border for input */
-      }
+        .success, .error {
+            color: #38a169; /* For success messages */
+            margin-bottom: 20px;
+        }
 
-      form {
-          text-align: right;
-      }
+        .error {
+            color: red; /* For error messages */
+        }
 
-      /* Additional styles for logout button, messages, and cart */
-      input[type="submit"][value="Logout"] {
-          background-color: #d9534f; /* Red color can stay for semantic reasons */
-      }
+        a {
+            color: blue;
+        }
 
-      input[type="submit"][value="Logout"]:hover {
-          background-color: #c9302c; /* Darker red for hover state */
-      }
-
-      p {
-          margin: 20px 0;
-      }
-
-      /* Use this if you have specific IDs or classes for success/error messages */
-      .success {
-          color: #38a169; /* Adjusted for better visibility on dark background */
-      }
-
-      .error {
-          color: #e53e3e; /* Adjusted for better visibility on dark background */
-      }
-
-      /* Additional layout styles for your forms and user info */
-      div {
-          margin-bottom: 20px;
-      }
-
-      /* Optional: you may want to add a style for links or other elements */
-      a {
-          color: #559fff; /* Example link color */
-      }
-
-      a:hover {
-          color: #1c7ed6; /* Darker shade for hover state */
-      }
-
-  </style>
+        a:hover {
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
 <h1>Welcome to the User Dashboard</h1>
@@ -122,9 +87,10 @@
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Logout" />
 </form>
+
+<h2>Available Books</h2>
 <div th:if="${not #lists.isEmpty(books)}">
-    <h2>Available Books</h2>
-    <table border="1">
+    <table>
         <thead>
         <tr>
             <th>Title</th>
@@ -149,15 +115,61 @@
         </tr>
         </tbody>
     </table>
+    <div th:if="${success}">
+        <p th:text="${success}"></p>
+    </div>
+</div>
+
+<h2>Add a New Book</h2>
+<form th:action="@{/addBook}" method="post">
+    <input type="text" name="title" placeholder="Title" required />
+    <input type="text" name="author" placeholder="Author" required />
+    <input type="text" name="isbn" placeholder="ISBN" required />
+    <input type="number" name="price" placeholder="Price" step="0.01" required />
+    <input type="number" name="quantity" placeholder="Quantity" required />
+    <button type="submit">Add Book</button>
+</form>
+
+<!-- Book List -->
+<div th:if="${not #lists.isEmpty(books)}">
+    <h2>Available Books</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}">Title</td>
+            <td th:text="${book.author}">Author</td>
+            <td th:text="${book.isbn}">ISBN</td>
+            <td th:text="${book.price}">Price</td>
+            <td th:text="${book.quantity}">Quantity</td>
+            <td>
+                <a th:href="@{/deleteBook/{bookId}(bookId=${book.bookID})}">Delete</a> |
+                <a th:href="@{/editBook/{bookId}(bookId=${book.bookID})}">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div th:if="${#lists.isEmpty(books)}">
     <p>No books available at the moment.</p>
 </div>
-<div th:if="${success}">
-    <p th:text="${success}"></p>
+
+<div th:if="${successMessage2}">
+    <p th:text="${successMessage2}"></p>
 </div>
 <div th:if="${error}">
     <p th:text="${error}"></p>
 </div>
+
+
 </body>
 </html>

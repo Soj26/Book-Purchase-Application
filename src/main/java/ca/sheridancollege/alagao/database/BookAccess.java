@@ -17,32 +17,10 @@ public class BookAccess {
     @Autowired
     private NamedParameterJdbcTemplate jdbc;
 
-    public void insertBook(Book book) {
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        String query = "INSERT INTO books (title, author, isbn, quantity, price) VALUES (:title, :author, :isbn, :quantity, :price)";
-        namedParameters.addValue("title", book.getTitle());
-        namedParameters.addValue("author", book.getAuthor());
-        namedParameters.addValue("isbn", book.getIsbn());
-        namedParameters.addValue("quantity", book.getQuantity());
-        namedParameters.addValue("price", book.getPrice());
-        int rowsAffected = jdbc.update(query, namedParameters);
-        if (rowsAffected > 0)
-            System.out.println(book.getTitle() + " inserted into the database");
-    }
-
     public List<Book> getBookList() {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         String query = "SELECT * FROM books";
         return jdbc.query(query, namedParameters, new BeanPropertyRowMapper<>(Book.class));
-    }
-
-    public void deleteBookById(Long id) {
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        String query = "DELETE FROM books WHERE bookID = :id";
-        namedParameters.addValue("id", id);
-        if (jdbc.update(query, namedParameters) > 0) {
-            System.out.println("Deleted Book with ID " + id + " from the database.");
-        }
     }
 
     public Book findBookById(Long id) {
@@ -52,28 +30,40 @@ public class BookAccess {
         try {
             return jdbc.queryForObject(query, namedParameters, new BeanPropertyRowMapper<>(Book.class));
         } catch (EmptyResultDataAccessException e) {
-            return null; // Or handle the exception as per your application's requirement
+            return null; //
         }
     }
 
-    public void updateBookById(Long bookId, Book updatedBook) {
+    public void insertBook(Book book) {
+        String query = "INSERT INTO books (title, author, isbn, quantity, price) VALUES (:title, :author, :isbn, :quantity, :price)";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("title", book.getTitle());
+        params.addValue("author", book.getAuthor());
+        params.addValue("isbn", book.getIsbn());
+        params.addValue("quantity", book.getQuantity());
+        params.addValue("price", book.getPrice());
+        jdbc.update(query, params);
+    }
 
+
+    public void deleteBook(Long bookID) {
+        String query = "DELETE FROM books WHERE bookID = :bookID";
+        MapSqlParameterSource params = new MapSqlParameterSource("bookID", bookID);
+        jdbc.update(query, params);
+    }
+
+
+    public void updateBookById(Long bookID, Book updatedBook) {
         String query = "UPDATE books SET title = :title, author = :author, isbn = :isbn, quantity = :quantity, price = :price WHERE bookID = :bookID";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("bookID", bookId);
+        params.addValue("bookID", bookID);
         params.addValue("title", updatedBook.getTitle());
         params.addValue("author", updatedBook.getAuthor());
         params.addValue("isbn", updatedBook.getIsbn());
         params.addValue("quantity", updatedBook.getQuantity());
         params.addValue("price", updatedBook.getPrice());
 
-        int rowsAffected = jdbc.update(query, params);
-        if (rowsAffected > 0) {
-            System.out.println("Updated book with ID " + bookId);
-        } else {
-
-            System.out.println("No book found with ID " + bookId);
-        }
+        jdbc.update(query, params);
     }
 }

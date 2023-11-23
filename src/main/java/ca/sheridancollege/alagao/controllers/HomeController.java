@@ -7,10 +7,7 @@ import ca.sheridancollege.alagao.database.DatabaseAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.security.Principal;
@@ -32,7 +29,7 @@ public class HomeController {
         if (user != null) {
             model.addAttribute("userName", user.getName());
             model.addAttribute("userBalance", user.getBalance());
-            // Other user details...
+
         } else {
             model.addAttribute("error", "User not found");
         }
@@ -70,24 +67,24 @@ public class HomeController {
                                   @RequestParam String confirmPassword,
                                   @RequestParam String name,
                                   Model model) {
-        // Check if passwords match
+
         if (!password.equals(confirmPassword)) {
             model.addAttribute("error", "Passwords do not match");
-            return "register"; // Send back to the registration form with error
+            return "register";
         }
 
-        // Add user to the database
+
         try {
             da.addUser(email, password, name );
             Long userId = da.findUserAccount(email).getUserID();
-            da.addRole(userId, 1L); // Consider using a constant or enum for role IDs
+            da.addRole(userId, 1L);
 
-            // Redirect to a success page or login page after successful registration
+
             return "redirect:/login";
         } catch (Exception e) {
-            // Handle exceptions like duplicate email, etc.
+
             model.addAttribute("error", "Registration failed: " + e.getMessage());
-            return "register"; // Send back to the registration form with error
+            return "register";
         }
     } @PostMapping("/buy/{bookId}")
     public String buyBook(@PathVariable Long bookId, @RequestParam int quantity, Principal principal, Model model) {
@@ -129,5 +126,27 @@ public class HomeController {
         model.addAttribute("userBalance", user.getBalance());
 
         return "/secured/user/index";
+    }
+
+    @PostMapping("/addBook")
+    public String addBook(@ModelAttribute Book book, Model model) {
+        bookAccess.insertBook(book);
+        model.addAttribute("successMessage2", "Book added successfully!");
+        return "redirect:/secured/user";
+    }
+
+    @GetMapping("/deleteBook/{bookId}")
+    public String deleteBook(@PathVariable Long bookId, Model model) {
+        bookAccess.deleteBook(bookId);
+        model.addAttribute("successMessage2", "Book deleted successfully!");
+        return "redirect:/secured/user";
+    }
+
+
+    @PostMapping("/editBook")
+    public String editBook(@RequestParam Long bookId, @ModelAttribute Book updatedBook, Model model) {
+        bookAccess.updateBookById(bookId, updatedBook);
+        model.addAttribute("successMessage2", "Book updated successfully!");
+        return "redirect:/secured/user";
     }
 }
